@@ -1,16 +1,23 @@
 {
   "name": "react-panel-split",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A react split panel component based on antd",
   "main": "index.js",
   "module": "index.js",
+  "files": [
+    "src",
+    "lib",
+    "esm",
+    "dist"
+  ],
   "scripts": {
     "dev": "webpack serve --config webpack.config.dev.js",
     "build": "npm run clean && npm run build:umd && npm run build:esm",
     "build:umd": "webpack",
     "build:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
     "clean": "rimraf dist esm",
-    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix"
+    "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "React",
