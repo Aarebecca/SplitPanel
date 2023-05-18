@@ -1,5 +1,5 @@
 {
-  "name": "react-split-panel",
+  "name": "react-panel-split",
   "version": "0.0.1",
   "description": "A react split panel component based on antd",
   "main": "index.js",
