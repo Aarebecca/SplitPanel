@@ -61,14 +61,14 @@ export const Tabs: React.FC<Props> = (props) => {
     ]
   );
 
-  const activeCurrentTab = () => {
+  const activeCurrentTabs = () => {
     setActiveTabs(props.tabs.tabsKey);
   };
 
   useEffect(() => {
     /** 默认当前第一个 tabs 是活跃的 */
     if (!activeTabsKey) {
-      activeCurrentTab();
+      activeCurrentTabs();
     }
 
     const handleAddTab = ({ detail: { key, title } }) => addTab(key, title);
@@ -81,7 +81,7 @@ export const Tabs: React.FC<Props> = (props) => {
 
   const handleTabClick = (activeKey) => {
     if (activeTabsKey !== props.tabs.tabsKey) {
-      activeCurrentTab();
+      activeCurrentTabs();
     }
     setActiveTab(activeKey);
   };
@@ -94,6 +94,11 @@ export const Tabs: React.FC<Props> = (props) => {
     }
     const newRootTabs = updateTabsData(rootTabs, tabs.tabsKey, newChilds);
     updateRootTabs(newRootTabs);
+
+    if (newChilds.length === 0) {
+      setActiveTabs(newRootTabs.tabsKey);
+    } else activeCurrentTabs();
+
     if (key === activeTab) {
       setActiveTab(newChilds?.at(-1)?.id || '');
     }
@@ -103,7 +108,7 @@ export const Tabs: React.FC<Props> = (props) => {
     if (action === 'remove') {
       handleTabClose(targetKey);
     } else {
-      activeCurrentTab();
+      activeCurrentTabs();
       addTab(v4(), 'New Tab', false);
     }
   };
