@@ -37,10 +37,6 @@ module.exports = {
           { loader: 'less-loader' },
         ]
       },
-      // {
-      //   test: /.wasm$/,
-      //   use: ['file-loader'],
-      // },
     ],
   },
   plugins: [
@@ -48,9 +44,4 @@ module.exports = {
       template: './public/index.html',
     })
   ],
-  // resolve: {
-  //   alias: {
-  //     'monaco-editor-core': require.resolve('@alipay/e2-editor-core/dist/monaco-compability.esm.js'),
-  //   },
-  // },
 };

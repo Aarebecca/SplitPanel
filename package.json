@@ -1,9 +1,11 @@
 {
   "name": "react-panel-split",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A react split panel component based on antd",
-  "main": "index.js",
-  "module": "index.js",
+  "main": "lib/index.js",
+  "module": "esm/index.js",
+  "unpkg": "dist/index.min.js",
+  "types": "lib/index.d.ts",
   "files": [
     "src",
     "lib",
@@ -12,10 +14,11 @@
   ],
   "scripts": {
     "dev": "webpack serve --config webpack.config.dev.js",
-    "build": "npm run clean && npm run build:umd && npm run build:esm",
+    "build": "run-s clean build:*",
     "build:umd": "webpack",
+    "build:cjs": "tsc -p tsconfig.json --target ES5 --module commonjs --outDir lib",
     "build:esm": "tsc -p tsconfig.json --target ES5 --module ESNext --outDir esm",
-    "clean": "rimraf dist esm",
+    "clean": "rimraf dist esm lib",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
     "prepublishOnly": "npm run build"
   },
@@ -38,6 +41,7 @@
     "html-webpack-plugin": "^5.5.1",
     "less-loader": "^11.1.0",
     "less": "^4.1.3",
+    "npm-run-all": "^4.1.5",
     "react-dom": "^18.2.0",
     "react": "^18.2.0",
     "rimraf": "^5.0.1",
