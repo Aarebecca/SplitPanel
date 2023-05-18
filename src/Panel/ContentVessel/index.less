@@ -1,0 +1,74 @@
+.tab-pane-content-vessel {
+  height: 100%;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: none;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: all 200ms ease-in-out;
+    content: '';
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &.drag-over {
+    &::after {
+      top: 0;
+      left: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      opacity: 0.5;
+    }
+
+    &.drag-over-left {
+      &::after {
+        top: 0;
+        left: 0;
+        display: block;
+        width: 50%;
+        height: 100%;
+        opacity: 0.5;
+      }
+    }
+
+    &.drag-over-right {
+      &::after {
+        top: 0;
+        left: 50%;
+        display: block;
+        width: 50%;
+        height: 100%;
+        opacity: 0.5;
+      }
+    }
+
+    &.drag-over-top {
+      &::after {
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 50%;
+        opacity: 0.5;
+      }
+    }
+
+    &.drag-over-bottom {
+      &::after {
+        top: 50%;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 50%;
+        opacity: 0.5;
+      }
+    }
+  }
+}

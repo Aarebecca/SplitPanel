@@ -1,0 +1,27 @@
+.split-panel-demo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-size: 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .body {
+    display: flex;
+    flex-direction: row;
+    height: calc(100% - 40px);
+    justify-content: space-between;
+
+    .body-content {
+      width: calc(100% - 200px);
+    }
+  }
+}
