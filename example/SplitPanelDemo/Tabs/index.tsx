@@ -4,18 +4,19 @@ import { v4 } from 'uuid';
 import {
   ContentVessel,
   NameVessel,
-  PanelContext,
-  updateTabsData,
-  type ITabs,
+  ViewContext,
+  updateViewData,
+  type IView,
 } from '../../../src';
 import './index.less';
 
 const { TabPane } = AntTabs;
 
 interface Props {
-  activeTabsKey: string;
-  tabs: ITabs;
+  tabs: IView;
+  /** 空内容 */
   emptyContent?: React.ReactNode;
+  /** Tab 渲染 */
   renderContent: (key: string, title: string) => React.ReactNode;
 }
 
@@ -25,15 +26,16 @@ export function addTab(key: string, title: string) {
 
 export const Tabs: React.FC<Props> = (props) => {
   const { tabs } = props;
+
   const { items: tabsData = [] } = tabs;
-  const { activeTabsKey, setActiveTabs, rootTabs, updateRootTabs } =
-    useContext(PanelContext);
+  const { activeViewKey, setActiveView, rootView, updateRootView } =
+    useContext(ViewContext);
   const [activeTab, setActiveTab] = useState<string>(tabsData[0]?.id || '');
 
   const addTab = useCallback(
     (key: string, title: string, whenActive = true) => {
       // 该 tabs 不是活跃的，不处理
-      if (whenActive && props.activeTabsKey !== props.tabs.tabsKey) return;
+      if (whenActive && activeViewKey !== props.tabs.viewKey) return;
       const newTabData = { id: key, name: title };
       let newChilds = props.tabs.items;
       // 如果该 tab 已经存在，则不再添加
@@ -43,31 +45,31 @@ export const Tabs: React.FC<Props> = (props) => {
       if (!(index > -1)) {
         newChilds = props.tabs.items.concat([newTabData]);
       }
-      const newRootTabs = updateTabsData(
-        rootTabs,
-        props.tabs.tabsKey,
+      const newRootTabs = updateViewData(
+        rootView,
+        props.tabs.viewKey,
         newChilds
       );
-      updateRootTabs(newRootTabs);
+      updateRootView(newRootTabs);
       setActiveTab(newTabData.id);
     },
     [
-      props.activeTabsKey,
+      activeViewKey,
       props.tabs.items,
-      props.tabs.tabsKey,
+      props.tabs.viewKey,
       setActiveTab,
-      rootTabs,
-      updateRootTabs,
+      rootView,
+      updateRootView,
     ]
   );
 
-  const activeCurrentTabs = () => {
-    setActiveTabs(props.tabs.tabsKey);
-  };
+  const activeCurrentTabs = useCallback(() => {
+    setActiveView(props.tabs.viewKey);
+  }, [setActiveView]);
 
   useEffect(() => {
     /** 默认当前第一个 tabs 是活跃的 */
-    if (!activeTabsKey) {
+    if (!activeViewKey) {
       activeCurrentTabs();
     }
 
@@ -77,10 +79,10 @@ export const Tabs: React.FC<Props> = (props) => {
     return () => {
       document.removeEventListener<any>('addTab', handleAddTab);
     };
-  }, [activeTabsKey, props.tabs.tabsKey, setActiveTabs]);
+  }, [activeCurrentTabs]);
 
   const handleTabClick = (activeKey) => {
-    if (activeTabsKey !== props.tabs.tabsKey) {
+    if (activeViewKey !== props.tabs.viewKey) {
       activeCurrentTabs();
     }
     setActiveTab(activeKey);
@@ -92,11 +94,11 @@ export const Tabs: React.FC<Props> = (props) => {
     if (index > -1) {
       newChilds = props.tabs.items.filter((child) => child.id !== key);
     }
-    const newRootTabs = updateTabsData(rootTabs, tabs.tabsKey, newChilds);
-    updateRootTabs(newRootTabs);
+    const newRootTabs = updateViewData(rootView, tabs.viewKey, newChilds);
+    updateRootView(newRootTabs);
 
     if (newChilds.length === 0) {
-      setActiveTabs(newRootTabs.tabsKey);
+      setActiveView(newRootTabs.viewKey);
     } else activeCurrentTabs();
 
     if (key === activeTab) {
@@ -126,25 +128,29 @@ export const Tabs: React.FC<Props> = (props) => {
         type="editable-card"
         onEdit={handleTabEdit}
       >
-        {tabsData.map((tab) => {
-          return (
-            <TabPane
-              key={tab?.id}
-              tab={
-                <NameVessel
-                  tabsKey={tabs.tabsKey}
-                  tabData={tab}
-                  children={tab.name}
+        {tabsData.length === 0 ? (
+          <div>Empty</div>
+        ) : (
+          tabsData.map((tab) => {
+            return (
+              <TabPane
+                key={tab?.id}
+                tab={
+                  <NameVessel
+                    viewKey={tabs.viewKey}
+                    viewData={tab}
+                    children={tab.name}
+                  />
+                }
+              >
+                <ContentVessel
+                  viewKey={tabs.viewKey}
+                  children={props.renderContent(tab?.id, tab?.name)}
                 />
-              }
-            >
-              <ContentVessel
-                tabsKey={tabs.tabsKey}
-                children={props.renderContent(tab?.id, tab?.name)}
-              />
-            </TabPane>
-          );
-        })}
+              </TabPane>
+            );
+          })
+        )}
       </AntTabs>
     </div>
   );

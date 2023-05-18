@@ -1,14 +1,14 @@
 import React from 'react';
 
 interface Props {
-  tabsKey: string;
-  tabData: any;
+  viewKey: string;
+  viewData: any;
   children: React.ReactNode | undefined;
 }
 
 type DragHandler = React.DragEventHandler<HTMLDivElement>;
 
-export const NameVessel = ({ tabsKey, tabData, children }: Props) => {
+export const NameVessel = ({ viewKey, viewData, children }: Props) => {
   const ref = React.useRef<HTMLDivElement>(null);
 
   const onDragStart: DragHandler = React.useCallback(
@@ -16,35 +16,35 @@ export const NameVessel = ({ tabsKey, tabData, children }: Props) => {
       e.dataTransfer.setData(
         'text/plain',
         JSON.stringify({
-          tabsKey,
-          dragNode: tabData,
+          viewKey,
+          dragNode: viewData,
         })
       );
     },
-    [tabData]
+    [viewData]
   );
 
   const onDragOver: DragHandler = React.useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
     if (ref.current) {
-      ref.current.classList.add('dp-tabpane-dragover');
+      ref.current.classList.add('dp-viewpane-dragover');
     }
   }, []);
 
   const onDragLeave: DragHandler = React.useCallback((e) => {
     if (ref.current) {
-      ref.current.classList.remove('dp-tabpane-dragover');
+      ref.current.classList.remove('dp-viewpane-dragover');
     }
   }, []);
 
   const onDrop: DragHandler = React.useCallback(
     (e) => {
       if (ref.current) {
-        ref.current.classList.remove('dp-tabpane-dragover');
+        ref.current.classList.remove('dp-viewpane-dragover');
       }
     },
-    [tabData]
+    [viewData]
   );
 
   return (

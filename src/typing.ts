@@ -1,18 +1,18 @@
-export interface TabData {
-  /** Tab唯一id */
+export interface ViewData {
+  /** View唯一id */
   id: string;
-  /** Tab名称 */
+  /** View名称 */
   name: string;
 }
 
 /** 研发模块分栏 */
-export interface ITabs {
-  parentTabsKey: string;
-  tabsKey: string;
+export interface IView {
+  parentViewKey: string;
+  isRoot?: boolean;
+  viewKey: string;
   items: any[];
-  mixed: boolean;
-  v: ITabs[];
-  h: ITabs[];
+  v: IView[];
+  h: IView[];
 }
 
 /** 分栏 - 水平 or 竖直拆分 */

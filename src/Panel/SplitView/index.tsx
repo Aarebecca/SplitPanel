@@ -1,49 +1,51 @@
 import React from 'react';
-import type { ITabs } from '../../typing';
+import type { IView } from '../../typing';
 import { ResizeHandleHorizontal, ResizeHandleVertical } from '../Resize';
 import './index.less';
 
 interface Props {
-  tabs: ITabs;
-  activeTabsKey: string;
-  renderComponent: (tabs: ITabs, activeTabsKey: string) => JSX.Element;
+  view: IView;
+  activeViewKey: string;
+  renderComponent: (view: IView, activeViewKey: string) => JSX.Element;
 }
 
 const SplitView = (props: Props) => {
-  const { tabs, activeTabsKey, renderComponent } = props;
+  const { view, activeViewKey, renderComponent } = props;
 
-  if (tabs.v.length === 0 && tabs.h.length === 0) {
-    return renderComponent(tabs, activeTabsKey);
+  const { v: vertical = [], h: horizontal = [] } = view;
+
+  if (vertical.length === 0 && horizontal.length === 0) {
+    return renderComponent(view, activeViewKey);
   }
 
   let defaultChildStyle = {};
   const children: React.ReactNode[] = [];
 
-  if (tabs.v.length !== 0) {
-    defaultChildStyle = { width: 100 / tabs.v.length + '%' };
+  if (vertical.length !== 0) {
+    defaultChildStyle = { width: 100 / vertical.length + '%' };
 
-    tabs.v.forEach((g, index) => {
+    vertical.forEach((g, index) => {
       if (index !== 0) {
         children.push(
           <ResizeHandleHorizontal
-            key={'resize-' + tabs.v[index - 1].tabsKey + '-' + g.tabsKey}
+            key={'resize-' + vertical[index - 1].viewKey + '-' + g.viewKey}
           />
         );
       }
       const child = (
         <SplitView
-          tabs={g}
-          activeTabsKey={activeTabsKey}
+          view={g}
+          activeViewKey={activeViewKey}
           renderComponent={renderComponent}
         />
       );
-      const cls = `tabs-view-horizontal-child ${index === 0 ? 'first' : ''}`;
+      const cls = `view-view-horizontal-child ${index === 0 ? 'first' : ''}`;
       if (child) {
         children.push(
           <div
             className={cls}
             style={defaultChildStyle}
-            key={g.tabsKey}
+            key={g.viewKey}
             data-min-resize={150}
           >
             {child}
@@ -53,31 +55,31 @@ const SplitView = (props: Props) => {
     });
   }
 
-  if (tabs.h.length !== 0) {
-    defaultChildStyle = { height: 100 / tabs.h.length + '%' };
+  if (horizontal.length !== 0) {
+    defaultChildStyle = { height: 100 / horizontal.length + '%' };
 
-    tabs.h.forEach((g, index) => {
+    horizontal.forEach((g, index) => {
       if (index !== 0) {
         children.push(
           <ResizeHandleVertical
-            key={'resize-' + tabs.h[index - 1].tabsKey + '-' + g.tabsKey}
+            key={'resize-' + horizontal[index - 1].viewKey + '-' + g.viewKey}
           />
         );
       }
       const child = (
         <SplitView
-          tabs={g}
-          activeTabsKey={activeTabsKey}
+          view={g}
+          activeViewKey={activeViewKey}
           renderComponent={renderComponent}
         />
       );
-      const cls = `tabs-view-vertical-child ${index === 0 ? 'first' : ''}`;
+      const cls = `view-view-vertical-child ${index === 0 ? 'first' : ''}`;
       if (child) {
         children.push(
           <div
             className={cls}
             style={defaultChildStyle}
-            key={g.tabsKey}
+            key={g.viewKey}
             data-min-resize={60}
           >
             {child}
@@ -88,11 +90,11 @@ const SplitView = (props: Props) => {
   }
 
   if (children.length === 0) {
-    return null;
+    return <div>Empty</div>;
   }
 
-  const cls = `${tabs.h.length > 0 ? 'tabs-view-vertical' : ''} ${
-    tabs.v.length > 0 ? 'tabs-view-horizontal' : ''
+  const cls = `${horizontal.length > 0 ? 'view-view-vertical' : ''} ${
+    vertical.length > 0 ? 'view-view-horizontal' : ''
   }`;
   return <div className={cls}>{children}</div>;
 };

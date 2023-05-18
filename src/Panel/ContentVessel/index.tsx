@@ -1,28 +1,28 @@
 import React from 'react';
-import { PanelContext } from '..';
+import { ViewContext } from '..';
 import { DragOverPosition } from '../../typing';
 import {
   decorateDragOverElement,
   getDragOverPosition,
-  handleTabsSplit,
+  handleViewSplit,
   removeDecorateDragOverElement,
 } from '../../utils';
 import './index.less';
 
 interface Props {
-  tabsKey: string;
+  viewKey: string;
   children: React.ReactNode | undefined;
 }
 
-/** Tab 内容区域的包裹容器，用于处理节点拖拽到该区域后的一些逻辑 */
+/** View 内容区域的包裹容器，用于处理节点拖拽到该区域后的一些逻辑 */
 export const ContentVessel = React.memo((props: Props) => {
   const vesselRef = React.useRef<HTMLDivElement>(null);
-  const { rootTabs, updateRootTabs } = React.useContext(PanelContext);
+  const { rootView, updateRootView } = React.useContext(ViewContext);
 
   return (
     <div
       ref={vesselRef}
-      className={'tab-pane-content-vessel'}
+      className={'view-pane-content-vessel'}
       onDragOver={(e) => {
         e.preventDefault();
 
@@ -48,15 +48,15 @@ export const ContentVessel = React.memo((props: Props) => {
           position = getDragOverPosition(e.nativeEvent, vesselRef.current);
         }
         const transferData = e.dataTransfer.getData('text/plain');
-        const { tabsKey: sourceTabsKey, dragNode } = JSON.parse(transferData);
-        const newRootTabs = handleTabsSplit(
-          rootTabs,
-          sourceTabsKey,
-          props.tabsKey,
+        const { viewKey: sourceViewKey, dragNode } = JSON.parse(transferData);
+        const newRootView = handleViewSplit(
+          rootView,
+          sourceViewKey,
+          props.viewKey,
           position,
           dragNode
         );
-        updateRootTabs(newRootTabs);
+        updateRootView(newRootView);
       }}
     >
       {props.children}
