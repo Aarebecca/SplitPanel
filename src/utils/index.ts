@@ -63,6 +63,20 @@ export function findTabsByKey(tabs: ITabs, key: string) {
   return targetTabs;
 }
 
+/** 获全部 tab items */
+export function getAllTabItems(tabs: ITabs | ITabs[]): ITabs['items'] {
+  const internalTabs = Array.isArray(tabs) ? tabs : [tabs];
+  let items: ITabs['items'] = [];
+
+  for (const tab of internalTabs) {
+    items = items.concat(tab.items);
+    if (tab.v) items = items.concat(getAllTabItems(tab.v));
+    if (tab.h) items = items.concat(getAllTabItems(tab.h));
+  }
+
+  return items;
+}
+
 /** 从source tabs中删除拖拽节点 */
 export function removeDragNodeSourceTabs(
   sourceTabs: ITabs,
@@ -108,6 +122,7 @@ function addDragNodeInTargetTabs(
   dragNode: any,
   position: DragOverPosition
 ) {
+  if (!tabs?.items) return;
   const tabsKey_1 = v4();
   const tabsKey_2 = v4();
   const dragChild = [dragNode];

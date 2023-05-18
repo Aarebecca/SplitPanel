@@ -9,7 +9,7 @@ export interface TabData {
 export interface ITabs {
   parentTabsKey: string;
   tabsKey: string;
-  items: any[] /** 这里应该是Tab的类型 */;
+  items: any[];
   mixed: boolean;
   v: ITabs[];
   h: ITabs[];
