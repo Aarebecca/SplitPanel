@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import SplitView from './SplitView';
+import SplitView, { type ComponentProps } from './SplitView';
 import { IView } from '../typing';
 import { v4 } from 'uuid';
 import './index.less';
@@ -30,7 +30,7 @@ export const AlreadyOpenedViewCache = 'already_opened_view_cache';
 const RootViewCache = 'top_view_data_cache';
 const ActiveViewKeyCache = 'active_view_key_cache';
 
-interface Props {
+export type SplitPanelProps = {
   /** 是否缓存当前布局数据 */
   cacheView?: boolean;
   /** 默认布局数据 */
@@ -42,11 +42,11 @@ interface Props {
   /** 视图数据变化 */
   onViewChange?: (view: IView) => void;
   /** 组件渲染 */
-  renderComponent: (view: IView, activeViewKey: string) => JSX.Element;
-}
+  renderComponent: (props: ComponentProps) => JSX.Element;
+};
 
 /** 研发模块顶层分栏 */
-export const SplitPanel: React.FC<Props> = (props) => {
+export const SplitPanel: React.FC<SplitPanelProps> = (props) => {
   const {
     cacheView,
     defaultView,
@@ -150,6 +150,7 @@ export const SplitPanel: React.FC<Props> = (props) => {
         >
           <SplitView
             view={rootView}
+            rootView={rootView}
             activeViewKey={activeViewKey}
             renderComponent={renderComponent}
           />

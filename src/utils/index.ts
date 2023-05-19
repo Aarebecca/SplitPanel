@@ -63,7 +63,7 @@ export function findViewByKey(view: IView, key: string) {
   return targetView;
 }
 
-/** 获全部 view items */
+/** 获取全部 view items */
 export function getAllViewItems(view: IView | IView[]): IView['items'] {
   const internalView = Array.isArray(view) ? view : [view];
   let items: IView['items'] = [];
@@ -75,6 +75,30 @@ export function getAllViewItems(view: IView | IView[]): IView['items'] {
   }
 
   return items;
+}
+
+/** 获取 item 的直接父视图 */
+export function getParentView(
+  rootView: IView,
+  item: IView['items'][number]
+): IView {
+  if (rootView.items.includes(item)) return rootView;
+
+  // search from view.v
+  const search = (views: IView[]) => {
+    for (const v of views) {
+      const parent = getParentView(v, item);
+      if (parent) return parent;
+    }
+  };
+
+  const fromV = search(rootView.v);
+  if (fromV) return fromV;
+
+  const fromH = search(rootView.h);
+  if (fromH) return fromH;
+
+  return null;
 }
 
 /** 从source view中删除拖拽节点 */

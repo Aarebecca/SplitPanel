@@ -79,10 +79,11 @@ const SplitPanelDemo: React.FC = () => {
             onViewChange={(view) => {
               console.log('view change:', view);
             }}
-            renderComponent={(tabs) => {
+            renderComponent={({ view, rootView }) => {
               return (
                 <Tabs
-                  tabs={tabs}
+                  tabs={view}
+                  rootTabs={rootView}
                   emptyContent={
                     <div>⬅️Click "Add Tab" Button to add new tab.</div>
                   }

@@ -14,6 +14,7 @@ const { TabPane } = AntTabs;
 
 interface Props {
   tabs: IView;
+  rootTabs: IView;
   /** 空内容 */
   emptyContent?: React.ReactNode;
   /** Tab 渲染 */

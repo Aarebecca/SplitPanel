@@ -3,19 +3,22 @@ import type { IView } from '../../typing';
 import { ResizeHandleHorizontal, ResizeHandleVertical } from '../Resize';
 import './index.less';
 
-interface Props {
+export type ComponentProps = {
   view: IView;
+  rootView: IView;
   activeViewKey: string;
-  renderComponent: (view: IView, activeViewKey: string) => JSX.Element;
+};
+interface Props extends ComponentProps {
+  renderComponent: (props: ComponentProps) => JSX.Element;
 }
 
 const SplitView = (props: Props) => {
-  const { view, activeViewKey, renderComponent } = props;
+  const { rootView, view = rootView, activeViewKey, renderComponent } = props;
 
   const { v: vertical = [], h: horizontal = [] } = view;
 
   if (vertical.length === 0 && horizontal.length === 0) {
-    return renderComponent(view, activeViewKey);
+    return renderComponent({ view, rootView, activeViewKey });
   }
 
   let defaultChildStyle = {};
@@ -35,6 +38,7 @@ const SplitView = (props: Props) => {
       const child = (
         <SplitView
           view={g}
+          rootView={rootView}
           activeViewKey={activeViewKey}
           renderComponent={renderComponent}
         />
@@ -69,6 +73,7 @@ const SplitView = (props: Props) => {
       const child = (
         <SplitView
           view={g}
+          rootView={rootView}
           activeViewKey={activeViewKey}
           renderComponent={renderComponent}
         />

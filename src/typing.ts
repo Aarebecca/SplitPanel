@@ -1,3 +1,5 @@
+export type { ComponentProps } from './Panel/SplitView/index';
+
 export interface ViewData {
   /** View唯一id */
   id: string;
@@ -11,8 +13,8 @@ export interface IView {
   isRoot?: boolean;
   viewKey: string;
   items: any[];
-  v: IView[];
-  h: IView[];
+  v?: IView[];
+  h?: IView[];
 }
 
 /** 分栏 - 水平 or 竖直拆分 */
