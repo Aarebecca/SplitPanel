@@ -1,0 +1,15 @@
+name: 'Raise an Issue'
+description: 'Raise an issue to help us improve'
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to raise an issue. Please fill in the details below to help us improve.
+  - type: textarea
+    id: issue-description
+    attributes:
+      label: Issue Description
+      description: Please provide a description of the issue
+      placeholder: Issue Description
+    validations:
+      required: true

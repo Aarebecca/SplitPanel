@@ -1,0 +1,22 @@
+name: Auto Reply to Labeled Issue
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  auto-reply:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Comment on Issue
+        if: ${{ github.event.label.name == 'bug' }}
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## This issue has been labeled
+            ```template
+                // This is a template for a comment
+            ```
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
