@@ -36,6 +36,10 @@ const defaultView: IView = {
 
 const defaultActiveViewKey = 'root-view';
 
+const TabContent = React.memo(({ id, label }: any) => {
+  return <div>{`${id}-${label}`}</div>;
+});
+
 const SplitPanelDemo: React.FC = () => {
   const addNewTab = () => {
     addTab(v4(), `New Tab`);
@@ -64,7 +68,9 @@ const SplitPanelDemo: React.FC = () => {
                   emptyContent={
                     <div>⬅️Click "Add Tab" Button to add new tab.</div>
                   }
-                  renderContent={(key, label) => <div>{`${key}-${label}`}</div>}
+                  renderContent={(id, label) => {
+                    return <TabContent key={id} id={id} label={label} />;
+                  }}
                 />
               );
             }}
