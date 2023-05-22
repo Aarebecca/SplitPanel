@@ -118,7 +118,7 @@ export function SplitPanel<T extends ViewData[]>(props: SplitPanelProps<T>) {
         h: [],
       };
       setRootView(rootView);
-      setItem(RootViewCache, JSON.stringify(rootView));
+      cacheView && setItem(RootViewCache, JSON.stringify(rootView));
     }
 
     const cachedActiveViewKey = getItem(ActiveViewKeyCache);
@@ -139,7 +139,8 @@ export function SplitPanel<T extends ViewData[]>(props: SplitPanelProps<T>) {
             rootView,
             updateRootView: (newRootView: IView<T>) => {
               setRootView(newRootView);
-              setItem(RootViewCache, JSON.stringify(newRootView));
+              /** 避免 newRootView 出现循环结构  */
+              cacheView && setItem(RootViewCache, JSON.stringify(newRootView));
             },
             activeViewKey,
             setActiveView: (newActiveViewKey: string) => {
