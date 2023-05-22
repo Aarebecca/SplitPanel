@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "dev": "webpack serve --config webpack.config.dev.js",
-    "build": "father build",
+    "build": "npm run clean && father build",
     "clean": "rimraf dist esm lib",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}' --fix",
     "prepublishOnly": "npm run build"
