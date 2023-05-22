@@ -6,58 +6,35 @@ import { Tabs, addTab } from './Tabs';
 import './index.less';
 
 const defaultView: IView = {
-  parentViewKey: '',
-  viewKey: '2ea3e78f-f9b7-42a4-9f6e-06431bfbcb22',
   isRoot: true,
-  items: [],
-  v: [
+  items: [
     {
-      parentViewKey: '2ea3e78f-f9b7-42a4-9f6e-06431bfbcb22',
-      viewKey: '0e0a8e9b-d3f6-4e44-9e93-c5d941c86b27',
-      items: [],
-      v: [],
-      h: [
-        {
-          parentViewKey: '0e0a8e9b-d3f6-4e44-9e93-c5d941c86b27',
-          viewKey: 'd026bbb2-205c-42f6-8c1c-7d5e7f1f8949',
-          items: [
-            { id: '944c6382-0192-4faa-bb2b-86efdbd52b2e', name: 'New Tab' },
-            { id: '4c396e52-dea8-40d2-b176-7966d56a5bc7', name: 'New Tab' },
-            { id: 'd222a660-6fd0-43d3-9290-d4848c5ddd18', name: 'New Tab' },
-            { id: '9fb3e83a-e80d-4851-ae26-f5eb21ec6c40', name: 'New Tab' },
-            { id: 'fa62cb3a-ed47-4cac-be2a-2d821c62dd05', name: 'New Tab' },
-          ],
-          v: [],
-          h: [],
-        },
-        {
-          parentViewKey: '0e0a8e9b-d3f6-4e44-9e93-c5d941c86b27',
-          viewKey: 'bd9f5058-b92e-4134-a8ce-46ca479a8ee7',
-          items: [
-            { id: 'c88e9171-9461-483f-ba9a-f2d89dfe91c0', name: 'New Tab' },
-            { id: '1a223e4d-a074-45c7-8532-e6d01488239d', name: 'New Tab' },
-            { id: '43352627-eb38-4389-8641-faf728f89ff4', name: 'New Tab' },
-          ],
-          v: [],
-          h: [],
-        },
-      ],
+      name: 'DSL查询 1',
+      id: '19bf97e4-fc19-4592-bbcb-cb9614b82eec',
+      asset: {
+        fn: () => {},
+      },
     },
     {
-      parentViewKey: '2ea3e78f-f9b7-42a4-9f6e-06431bfbcb22',
-      viewKey: '4d16a252-bfea-4068-86d2-3f070fb6b80b',
-      items: [
-        { id: '524f01be-b0fd-4421-96de-9cfc6bfdc54c', name: 'New Tab' },
-        { id: '4faf47fe-02ae-44d8-97de-f853a9931567', name: 'New Tab' },
-      ],
-      v: [],
-      h: [],
+      name: 'DSL查询 2',
+      id: '00a7373a-5c15-4984-8e3c-ba22adab2159',
+      asset: {
+        fn: () => {},
+      },
+    },
+    {
+      name: 'DSL查询 3',
+      id: '0911d246-2ab4-46f6-bda8-4ff146f2e980',
+      asset: {
+        fn: () => {},
+      },
     },
   ],
-  h: [],
+  parentViewKey: '',
+  viewKey: 'root-view',
 };
 
-const defaultActiveViewKey = '4d16a252-bfea-4068-86d2-3f070fb6b80b';
+const defaultActiveViewKey = 'root-view';
 
 const SplitPanelDemo: React.FC = () => {
   const addNewTab = () => {

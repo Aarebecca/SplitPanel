@@ -1,11 +1,11 @@
 import React from 'react';
-import type { IView } from '../../typing';
+import type { IView, ViewData } from '../../typing';
 import { ResizeHandleHorizontal, ResizeHandleVertical } from '../Resize';
 import './index.less';
 
-export type ComponentProps = {
-  view: IView;
-  rootView: IView;
+export type ComponentProps<T extends ViewData[] = ViewData[]> = {
+  view: IView<T>;
+  rootView: IView<T>;
   activeViewKey: string;
 };
 interface Props extends ComponentProps {
@@ -21,11 +21,11 @@ const SplitView = (props: Props) => {
     return renderComponent({ view, rootView, activeViewKey });
   }
 
-  let defaultChildStyle = {};
+  let defaultChildrentyle = {};
   const children: React.ReactNode[] = [];
 
   if (vertical.length !== 0) {
-    defaultChildStyle = { width: 100 / vertical.length + '%' };
+    defaultChildrentyle = { width: 100 / vertical.length + '%' };
 
     vertical.forEach((g, index) => {
       if (index !== 0) {
@@ -48,7 +48,7 @@ const SplitView = (props: Props) => {
         children.push(
           <div
             className={cls}
-            style={defaultChildStyle}
+            style={defaultChildrentyle}
             key={g.viewKey}
             data-min-resize={150}
           >
@@ -60,7 +60,7 @@ const SplitView = (props: Props) => {
   }
 
   if (horizontal.length !== 0) {
-    defaultChildStyle = { height: 100 / horizontal.length + '%' };
+    defaultChildrentyle = { height: 100 / horizontal.length + '%' };
 
     horizontal.forEach((g, index) => {
       if (index !== 0) {
@@ -83,7 +83,7 @@ const SplitView = (props: Props) => {
         children.push(
           <div
             className={cls}
-            style={defaultChildStyle}
+            style={defaultChildrentyle}
             key={g.viewKey}
             data-min-resize={60}
           >

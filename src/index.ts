@@ -9,4 +9,4 @@ export type {
   SplitDirection,
   ViewData,
 } from './typing';
-export { getAllViewItems, getParentView, updateViewData } from './utils';
+export { getAllViewItems, getParentView, createViewData } from './utils';

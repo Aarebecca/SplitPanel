@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import SplitView, { type ComponentProps } from './SplitView';
-import { IView } from '../typing';
+import { IView, ViewData } from '../typing';
 import { v4 } from 'uuid';
 import './index.less';
 
@@ -30,23 +30,23 @@ export const AlreadyOpenedViewCache = 'already_opened_view_cache';
 const RootViewCache = 'top_view_data_cache';
 const ActiveViewKeyCache = 'active_view_key_cache';
 
-export type SplitPanelProps = {
+export type SplitPanelProps<T extends ViewData[] = ViewData[]> = {
   /** 是否缓存当前布局数据 */
   cacheView?: boolean;
   /** 默认布局数据 */
-  defaultView?: IView;
+  defaultView?: IView<T>;
   /** 默认激活视图 */
   defaultActiveViewKey?: string;
   /** 激活视图变化 */
   onActiveViewChange?: (key: string) => void;
   /** 视图数据变化 */
-  onViewChange?: (view: IView) => void;
+  onViewChange?: (view: IView<T>) => void;
   /** 组件渲染 */
-  renderComponent: (props: ComponentProps) => JSX.Element;
+  renderComponent: (props: ComponentProps<T>) => JSX.Element;
 };
 
 /** 研发模块顶层分栏 */
-export const SplitPanel: React.FC<SplitPanelProps> = (props) => {
+export function SplitPanel<T extends ViewData[]>(props: SplitPanelProps<T>) {
   const {
     cacheView,
     defaultView,
@@ -55,17 +55,18 @@ export const SplitPanel: React.FC<SplitPanelProps> = (props) => {
     onViewChange,
     renderComponent,
   } = props;
-  const [rootView, _setRootView] = React.useState<IView>(
-    defaultView || {
-      parentViewKey: '',
-      viewKey: '',
-      items: [],
-      v: [],
-      h: [],
-    }
+  const [rootView, _setRootView] = React.useState(
+    defaultView ||
+      ({
+        parentViewKey: '',
+        viewKey: '',
+        items: [],
+        v: [],
+        h: [],
+      } as IView<T>)
   );
 
-  const setRootView = (view: IView) => {
+  const setRootView = (view: IView<T>) => {
     _setRootView(view);
     onViewChange?.(view);
   };
@@ -108,7 +109,7 @@ export const SplitPanel: React.FC<SplitPanelProps> = (props) => {
       setRootView(JSON.parse(cachedDevRootView));
     } else {
       const cachedView = getItem(AlreadyOpenedViewCache);
-      const rootView: IView = {
+      const rootView: IView<T> = {
         parentViewKey: '',
         isRoot: true,
         viewKey: v4(),
@@ -136,13 +137,12 @@ export const SplitPanel: React.FC<SplitPanelProps> = (props) => {
         <ViewContext.Provider
           value={{
             rootView,
-            updateRootView: (newRootView: IView) => {
+            updateRootView: (newRootView: IView<T>) => {
               setRootView(newRootView);
               setItem(RootViewCache, JSON.stringify(newRootView));
             },
             activeViewKey,
             setActiveView: (newActiveViewKey: string) => {
-              if (newActiveViewKey === activeViewKey) return;
               setActiveViewKey(newActiveViewKey);
               setItem(ActiveViewKeyCache, newActiveViewKey);
             },
@@ -158,4 +158,4 @@ export const SplitPanel: React.FC<SplitPanelProps> = (props) => {
       </div>
     </div>
   );
-};
+}

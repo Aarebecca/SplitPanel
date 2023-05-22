@@ -1,20 +1,21 @@
 export type { ComponentProps } from './Panel/SplitView/index';
 
-export interface ViewData {
+export type ViewData = {
   /** View唯一id */
   id: string;
   /** View名称 */
   name: string;
-}
+  [keys: string]: any;
+};
 
 /** 研发模块分栏 */
-export interface IView {
+export interface IView<I extends ViewData[] = ViewData[]> {
   parentViewKey: string;
   isRoot?: boolean;
   viewKey: string;
-  items: any[];
-  v?: IView[];
-  h?: IView[];
+  items: I;
+  v?: IView<I>[];
+  h?: IView<I>[];
 }
 
 /** 分栏 - 水平 or 竖直拆分 */

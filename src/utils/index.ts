@@ -107,13 +107,15 @@ export function removeDragNodeSourceView(
   dragNode: any,
   view: IView
 ) {
-  const findNode = sourceView.items.find((node) => node.id === dragNode.id);
+  const findNode = sourceView.items.find(
+    (node) => node.id && node.id === dragNode.id
+  );
   if (findNode) {
     sourceView.items = sourceView.items.filter(
-      (node) => node.id !== dragNode.id
+      (node) => node.id && node.id !== dragNode.id
     );
 
-    /** 如果当前view的childs为空, 则需要将该view从父亲中删除 */
+    /** 如果当前view的children为空, 则需要将该view从父亲中删除 */
     if (sourceView.items.length === 0) {
       removeViewFromParent(sourceView, view);
     }
@@ -150,7 +152,7 @@ function addDragNodeInTargetView(
   const viewKey_1 = v4();
   const viewKey_2 = v4();
   const dragChild = [dragNode];
-  const lastChilds = view.items;
+  const lastChildren = view.items;
   /** 向左 or 向右分割 */
   if ([DragOverPosition.LEFT, DragOverPosition.RIGHT].includes(position)) {
     const isLeft = position === DragOverPosition.LEFT;
@@ -159,14 +161,14 @@ function addDragNodeInTargetView(
       {
         parentViewKey: view.viewKey,
         viewKey: viewKey_1,
-        items: isLeft ? dragChild : lastChilds,
+        items: isLeft ? dragChild : lastChildren,
         v: [],
         h: [],
       },
       {
         parentViewKey: view.viewKey,
         viewKey: viewKey_2,
-        items: isLeft ? lastChilds : dragChild,
+        items: isLeft ? lastChildren : dragChild,
         v: [],
         h: [],
       },
@@ -184,14 +186,14 @@ function addDragNodeInTargetView(
       {
         parentViewKey: view.viewKey,
         viewKey: viewKey_1,
-        items: isTop ? dragChild : lastChilds,
+        items: isTop ? dragChild : lastChildren,
         v: [],
         h: [],
       },
       {
         parentViewKey: view.viewKey,
         viewKey: viewKey_2,
-        items: isTop ? lastChilds : dragChild,
+        items: isTop ? lastChildren : dragChild,
         v: [],
         h: [],
       },
@@ -205,18 +207,18 @@ function addDragNodeInTargetView(
 }
 
 /**
- * 更新View分栏数据
+ * 更新 viewKey 对应的视图中的 items，并返回更新后的视图数据
  * @param view 原始分栏数据
  * @param view 需要更新的目标view
- * @param newChilds 需要更新的目标view的childs
+ * @param children 需要更新的目标 view 的 children
  */
-export function updateViewData(view: IView, viewKey: string, newChilds: any) {
+export function createViewData(view: IView, viewKey: string, children: any) {
   const newView = { ...view };
   const targetView = findViewByKey(newView, viewKey);
 
-  targetView.items = newChilds;
+  targetView.items = children;
 
-  /** 如果当前view的childs为空, 则需要将该view从父亲中删除 */
+  /** 如果当前view的children为空, 则需要将该view从父亲中删除 */
   if (targetView.items.length === 0) {
     removeViewFromParent(targetView, newView);
   }

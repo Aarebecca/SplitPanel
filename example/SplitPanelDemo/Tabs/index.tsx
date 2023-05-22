@@ -5,7 +5,7 @@ import {
   ContentVessel,
   NameVessel,
   ViewContext,
-  updateViewData,
+  createViewData,
   type IView,
 } from '../../../src';
 import './index.less';
@@ -38,18 +38,18 @@ export const Tabs: React.FC<Props> = (props) => {
       // 该 tabs 不是活跃的，不处理
       if (whenActive && activeViewKey !== props.tabs.viewKey) return;
       const newTabData = { id: key, name: title };
-      let newChilds = props.tabs.items;
+      let newChildren = props.tabs.items;
       // 如果该 tab 已经存在，则不再添加
       const index = props.tabs.items.findIndex(
         (child) => child.id === newTabData.id
       );
       if (!(index > -1)) {
-        newChilds = props.tabs.items.concat([newTabData]);
+        newChildren = props.tabs.items.concat([newTabData]);
       }
-      const newRootTabs = updateViewData(
+      const newRootTabs = createViewData(
         rootView,
         props.tabs.viewKey,
-        newChilds
+        newChildren
       );
       updateRootView(newRootTabs);
       setActiveTab(newTabData.id);
@@ -90,20 +90,20 @@ export const Tabs: React.FC<Props> = (props) => {
   };
 
   const handleTabClose = (key) => {
-    let newChilds = props.tabs.items;
+    let newChildren = props.tabs.items;
     const index = props.tabs.items.findIndex((child) => child.id === key);
     if (index > -1) {
-      newChilds = props.tabs.items.filter((child) => child.id !== key);
+      newChildren = props.tabs.items.filter((child) => child.id !== key);
     }
-    const newRootTabs = updateViewData(rootView, tabs.viewKey, newChilds);
+    const newRootTabs = createViewData(rootView, tabs.viewKey, newChildren);
     updateRootView(newRootTabs);
 
-    if (newChilds.length === 0) {
+    if (newChildren.length === 0) {
       setActiveView(newRootTabs.viewKey);
     } else activeCurrentTabs();
 
     if (key === activeTab) {
-      setActiveTab(newChilds?.at(-1)?.id || '');
+      setActiveTab(newChildren?.at(-1)?.id || '');
     }
   };
 
