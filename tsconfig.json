@@ -9,7 +9,8 @@
     "moduleResolution": "node",
     "outDir": "lib",
     "skipLibCheck": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "sourceMap": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "example", "public"]

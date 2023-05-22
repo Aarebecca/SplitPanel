@@ -2,3 +2,5 @@ node_modules
 dist
 esm
 lib
+package
+*.tgz
